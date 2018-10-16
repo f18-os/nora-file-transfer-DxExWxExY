@@ -48,13 +48,15 @@ def server_protocols(fsock):
             trash, file = payload.decode().split(" ",1)
             if not os.path.exists("%s/__pycache__/%s" % (os.getcwd(), file)):
                 writer = open("%s/__pycache__/%s" % (os.getcwd(), file), "wb+")
-                fsock.sendmsg("start".encode())
+                # fsock.sendmsg("start".encode())
                 payload = fsock.receivemsg()
                 writer.write(payload)
                 writer.close()
                 print("Transfer Done.")
+                fsock.sendmsg("Transfer Done.".encode())
             else:
-               fsock.sendmsg("File Already Exists.".encode()) 
+                print("File Already Exists.")
+                fsock.sendmsg("File Already Exists.".encode()) 
         elif re.match("get\s[\w\W]+", payload.decode()):
             trash, file = payload.decode().split(" ",1)
             if os.path.exists("%s/__pycache__/%s" % (os.getcwd(),file)):

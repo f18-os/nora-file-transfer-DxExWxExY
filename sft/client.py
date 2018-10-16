@@ -69,6 +69,7 @@ def send_message(fs, *args):
             msg = "put " + file.rsplit('/', 1)[-1]
             fs.sendmsg(msg.encode())
             fs.sendmsg(open(file, "rb").read())
+            print(fs.receivemsg().decode())
         else:
             print("\nFile Doesn't Exist.")
     elif re.match("get\s[\w\W]+", user_input):
@@ -80,7 +81,7 @@ def send_message(fs, *args):
             payload = fs.receivemsg()
             writer.write(payload)
             writer.close()
-            print("\nTransfer Done.")
+            print(fs.receivemsg().decode())
         else:
             print("File not Found.")
     elif user_input == "quit":
@@ -94,5 +95,5 @@ def send_message(fs, *args):
 
 if __name__ == '__main__':
     init_client()
-    for i in range(1):
+    for i in range(10):
         ClientThread(serverHost, serverPort, debug)
